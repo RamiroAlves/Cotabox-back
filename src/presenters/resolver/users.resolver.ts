@@ -9,7 +9,17 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<User> {
+    // Verifica a soma atual de participation
+    const users = await this.usersService.findAll();
+
+    const currentSum = users.reduce((acc, user) => acc + user.participation, 0);
+    const newSum = currentSum + createUserInput.participation;
+
+    if (newSum > 100) {
+      throw new Error('A soma total de participation não pode ultrapassar 100');
+    }
+
     return this.usersService.create(createUserInput);
   }
 
