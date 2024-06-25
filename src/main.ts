@@ -6,7 +6,7 @@ async function bootstrap() {
 
   // Habilitando CORS
   app.enableCors({
-    origin: 'https://cotabox-page.vercel.app/',
+    origin: '*',
     credentials: true
   })
 
